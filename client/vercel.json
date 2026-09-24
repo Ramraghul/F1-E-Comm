@@ -1,0 +1,7 @@
+{
+  "framework": "vite",
+  "buildCommand": "cd .. && npm ci && npm run build -w shared && npm run build -w client",
+  "outputDirectory": "dist",
+  "installCommand": "echo 'handled in buildCommand'",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

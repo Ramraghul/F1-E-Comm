@@ -1,0 +1,18 @@
+FROM node:22-alpine
+WORKDIR /app
+
+# npm workspaces need every member's package.json present to resolve the install,
+# even though this image only runs the `server` workspace.
+COPY package.json package-lock.json ./
+COPY shared/package.json shared/package.json
+COPY server/package.json server/package.json
+COPY client/package.json client/package.json
+RUN npm ci
+
+COPY shared shared
+COPY server server
+RUN npm run build -w shared
+
+WORKDIR /app/server
+EXPOSE 5000
+CMD ["npm", "run", "dev"]

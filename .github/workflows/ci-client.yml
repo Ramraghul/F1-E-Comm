@@ -1,0 +1,26 @@
+name: CI - Client
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VITE_API_BASE_URL: http://localhost:5000/api/v1
+      VITE_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build -w shared
+      - run: npx eslint client/src
+      - run: npm run typecheck -w client
+      - run: npm run test -w client
+      - run: npm run build -w client

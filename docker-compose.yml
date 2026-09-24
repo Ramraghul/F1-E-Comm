@@ -1,0 +1,53 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: shopswift-mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile.dev
+    container_name: shopswift-server
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/shopswift
+      CLIENT_URL: http://localhost:5173
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./server/src:/app/server/src
+      - ./shared/src:/app/shared/src
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile.dev
+    container_name: shopswift-client
+    restart: unless-stopped
+    env_file:
+      - ./client/.env
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./client/src:/app/client/src
+      - ./shared/src:/app/shared/src
+    depends_on:
+      - server
+
+volumes:
+  mongo-data:

@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --team-primary: #e10600;
+  --team-secondary: #0a0a0f;
+  --team-accent: #ffffff;
+  --team-primary-glow: rgba(225, 6, 0, 0.35);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-base-900 text-neutral-100 font-sans antialiased;
+  background-image: radial-gradient(circle at 20% -10%, rgba(225, 6, 0, 0.08), transparent 40%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--team-primary);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: theme('colors.base.900');
+}
+::-webkit-scrollbar-thumb {
+  background: theme('colors.base.600');
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--team-primary);
+}
+
+.font-display {
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.racing-stripe {
+  position: relative;
+}
+.racing-stripe::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--team-primary), transparent 70%);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #ffffff, var(--team-primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card-surface {
+  @apply bg-base-850/80 border border-white/5 backdrop-blur-sm;
+}
+
+.shimmer-skeleton {
+  background: linear-gradient(
+    90deg,
+    theme('colors.base.800') 25%,
+    theme('colors.base.700') 37%,
+    theme('colors.base.800') 63%
+  );
+  background-size: 400% 100%;
+  @apply animate-shimmer;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-md bg-f1red px-5 py-2.5 font-display
+    text-sm font-semibold uppercase tracking-wide text-white shadow-glow transition
+    hover:bg-f1red-light active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.btn-team {
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 font-display text-sm
+    font-semibold uppercase tracking-wide text-white transition active:scale-[0.98]
+    disabled:cursor-not-allowed disabled:opacity-50;
+  background: var(--team-primary);
+  box-shadow: 0 0 24px 0 var(--team-primary-glow);
+}
+.btn-team:hover {
+  filter: brightness(1.1);
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center gap-2 rounded-md border border-white/15 px-5 py-2.5
+    font-display text-sm font-semibold uppercase tracking-wide text-white/90 transition
+    hover:border-white/40 hover:bg-white/5 active:scale-[0.98];
+}
+
+.input-field {
+  @apply w-full rounded-md border border-white/10 bg-base-800 px-3.5 py-2.5 text-sm text-white
+    placeholder:text-white/30 outline-none transition focus:border-f1red/70 focus:ring-2 focus:ring-f1red/20;
+}
+
+.label {
+  @apply mb-1.5 block font-display text-xs font-semibold uppercase tracking-wider text-white/50;
+}

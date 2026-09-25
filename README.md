@@ -208,6 +208,10 @@ Every protected endpoint documents its required role(s). Click "Authorize" and p
 
 Recommended combo: **Render** (API) + **Vercel** (frontend) + **MongoDB Atlas** (database) — all have generous free tiers.
 
+> **[`docs/deployment.md`](docs/deployment.md) is the full step-by-step runbook** — exact ordering, every env var, the Vercel monorepo setting that trips people up, a post-deploy checklist, and a troubleshooting table. The summary below is the short version.
+>
+> The API deploys to **Render, not Vercel** — `server/src/index.ts` runs a persistent `app.listen()` server, which Vercel's serverless model doesn't support without a rewrite.
+
 ### 1. MongoDB Atlas
 Create a free **M0** cluster, a database user, and under Network Access allow `0.0.0.0/0` (Render's free tier has dynamic outbound IPs — the app's own auth still gates all data access, so this is a standard, accepted trade-off for this hosting tier). Copy the connection string.
 

@@ -1,5 +1,10 @@
 import { Link } from 'react-router-dom';
 
+// Swagger is served by the API, not the SPA — derive its origin from the API base URL so
+// this resolves correctly whether the API is on localhost, Render, or same-origin behind a proxy.
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5000/api/v1';
+const SWAGGER_URL = `${new URL(API_BASE, window.location.origin).origin}/api-docs`;
+
 export function Footer() {
   return (
     <footer className="mt-24 border-t border-white/5 bg-base-950">
@@ -33,7 +38,7 @@ export function Footer() {
           <div>
             <h4 className="label">Developer</h4>
             <ul className="space-y-2 text-sm text-white/50">
-              <li><a href="/api-docs" target="_blank" rel="noreferrer" className="hover:text-white">API Docs (Swagger)</a></li>
+              <li><a href={SWAGGER_URL} target="_blank" rel="noreferrer" className="hover:text-white">API Docs (Swagger)</a></li>
             </ul>
           </div>
         </div>

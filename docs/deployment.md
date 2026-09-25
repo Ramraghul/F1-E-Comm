@@ -1,5 +1,23 @@
 # Deployment Guide
 
+## Current live deployment
+
+| Piece | URL | Platform |
+|---|---|---|
+| Storefront | https://f1-e-comm-client.vercel.app | Vercel |
+| API | https://f1-e-comm.onrender.com/api/v1 | Render (free tier) |
+| Swagger | https://f1-e-comm.onrender.com/api-docs | Render |
+| Database | `...acjlg4v.mongodb.net` | MongoDB Atlas M0 |
+
+The two cross-references that must stay in sync:
+
+- Render's `CLIENT_URL` = `https://f1-e-comm-client.vercel.app` (CORS)
+- Vercel's `VITE_API_BASE_URL` = `https://f1-e-comm.onrender.com/api/v1` (API calls)
+
+> ⚠️ The Atlas connection string has no database path, so the data lives in a database literally named **`test`** rather than `shopswift`. It works because both the seed script and Render use the same string — but if you ever append `/shopswift` to one and not the other, the site will silently go empty. Normalize both at once if you change it.
+
+---
+
 This is a monorepo with two deployable apps. **They do not go to the same place.**
 
 | App | Platform | Why |

@@ -8,8 +8,25 @@ Built with the MERN stack in TypeScript: **Node/Express/MongoDB** on the backend
 
 ---
 
+## 🔗 Live demo
+
+| | |
+|---|---|
+| **Storefront** | **https://f1-e-comm-client.vercel.app** |
+| **API docs (Swagger)** | **https://f1-e-comm.onrender.com/api-docs** |
+| **API health** | https://f1-e-comm.onrender.com/api/v1/health |
+
+> ⏳ **First load may take 30–50 seconds.** The API runs on Render's free tier, which spins the instance down after inactivity — the first request wakes it back up. Subsequent requests are fast. The app isn't broken, it's just waking up.
+
+Sign in with the [demo credentials](#demo-credentials) below to explore all three roles. The Swagger UI is fully interactive — log in via `POST /auth/login`, click **Authorize**, paste the access token, and you can exercise every protected endpoint straight from the browser.
+
+Payments run in **Stripe test mode** — use card `4242 4242 4242 4242`, any future expiry, any CVC. No real charges are possible.
+
+---
+
 ## Table of contents
 
+- [Live demo](#-live-demo)
 - [Features](#features)
 - [Tech stack](#tech-stack)
 - [Architecture](#architecture)
@@ -163,9 +180,16 @@ Notable coverage: password hashing, refresh-token rotation *and* reuse-detection
 
 ## API docs (Swagger)
 
-Once the server is running: **http://localhost:5000/api-docs**
+- **Live:** **https://f1-e-comm.onrender.com/api-docs** (give it 30–50s on the first hit — free-tier cold start)
+- **Local:** http://localhost:5000/api-docs once the server is running
 
-Every protected endpoint documents its required role(s). Click "Authorize" and paste an access token (from `POST /auth/login`'s response, or copy it from the browser's Redux state) to try protected routes directly from the docs UI. The raw OpenAPI JSON is at `/api-docs.json`.
+Every protected endpoint documents its required role(s). To try protected routes directly from the docs UI:
+
+1. Run `POST /auth/login` with one of the [demo credentials](#demo-credentials) — e.g. `admin@shopswift.dev` / `Admin@12345`
+2. Copy `data.tokens.accessToken` from the response
+3. Click **Authorize** (top right), paste the token, and every subsequent "Try it out" call is authenticated
+
+Role-gated routes return `403` if the token's role doesn't match — for example, a Race Team token can only touch its own team's products and offers. The raw OpenAPI JSON is at [`/api-docs.json`](https://f1-e-comm.onrender.com/api-docs.json).
 
 ---
 

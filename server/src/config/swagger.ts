@@ -1,9 +1,26 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import path from 'node:path';
-import { env } from './env';
+import { env, isProd } from './env';
 
 const isTs = __filename.endsWith('.ts');
 const srcRoot = path.join(__dirname, '..');
+
+const LOCAL_SERVER = { url: `http://localhost:${env.PORT}${env.API_PREFIX}`, description: 'Local' };
+const PRODUCTION_SERVER = {
+  url: `https://f1-e-comm.onrender.com${env.API_PREFIX}`,
+  description: 'Production (Render)',
+};
+const CUSTOM_SERVER = {
+  url: `{baseUrl}${env.API_PREFIX}`,
+  description: 'Custom',
+  variables: { baseUrl: { default: '' } },
+};
+
+// Swagger UI preselects the first entry, so lead with whichever one the running instance
+// actually is — otherwise "Try it out" on the deployed docs fires at the visitor's localhost.
+const servers = isProd
+  ? [PRODUCTION_SERVER, LOCAL_SERVER, CUSTOM_SERVER]
+  : [LOCAL_SERVER, PRODUCTION_SERVER, CUSTOM_SERVER];
 
 const swaggerDefinition: swaggerJSDoc.OAS3Definition = {
   openapi: '3.0.3',
@@ -19,10 +36,7 @@ const swaggerDefinition: swaggerJSDoc.OAS3Definition = {
     contact: { name: 'Shop Swift' },
     license: { name: 'MIT' },
   },
-  servers: [
-    { url: `http://localhost:${env.PORT}${env.API_PREFIX}`, description: 'Local' },
-    { url: `{baseUrl}${env.API_PREFIX}`, description: 'Custom', variables: { baseUrl: { default: '' } } },
-  ],
+  servers,
   tags: [
     { name: 'Auth', description: 'Registration, login, token refresh, password reset' },
     { name: 'Users', description: 'Profile management and admin user management' },
